@@ -1,1 +1,94 @@
-<p>persona works!</p>
+<div class="container">
+  <h1>Gestión de Personas</h1>
+  
+  <div class="form-card">
+    <h2>{{ editingId ? 'Editar' : 'Agregar' }} Persona</h2>
+    <form [formGroup]="personaForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" formControlName="nombre" placeholder="Ingrese nombre">
+          @if (personaForm.get('nombre')?.invalid && personaForm.get('nombre')?.touched) {
+            <span class="error">El nombre es requerido</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Apellido</label>
+          <input type="text" formControlName="apellido" placeholder="Ingrese apellido">
+          @if (personaForm.get('apellido')?.invalid && personaForm.get('apellido')?.touched) {
+            <span class="error">El apellido es requerido</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Edad</label>
+          <input type="number" formControlName="edad" placeholder="Ingrese edad">
+          @if (personaForm.get('edad')?.invalid && personaForm.get('edad')?.touched) {
+            <span class="error">La edad debe ser mayor a 0</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" formControlName="email" placeholder="ejemplo@mail.com">
+          @if (personaForm.get('email')?.invalid && personaForm.get('email')?.touched) {
+            <span class="error">Email inválido</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="personaForm.invalid" class="btn btn-primary">
+          {{ editingId ? 'Actualizar' : 'Guardar' }}
+        </button>
+        @if (editingId) {
+          <button type="button" (click)="cancelEdit()" class="btn btn-secondary">
+            Cancelar
+          </button>
+        }
+      </div>
+    </form>
+  </div>
+
+  <div class="table-card">
+    <h2>Lista de Personas</h2>
+    @if (personas.length === 0) {
+      <p class="no-data">No hay personas registradas</p>
+    } @else {
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Edad</th>
+              <th>Email</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (persona of personas; track persona.id) {
+              <tr>
+                <td>{{ persona.nombre }}</td>
+                <td>{{ persona.apellido }}</td>
+                <td>{{ persona.edad }}</td>
+                <td>{{ persona.email }}</td>
+                <td class="actions">
+                  <button (click)="editPersona(persona)" class="btn btn-edit">
+                    Editar
+                  </button>
+                  <button (click)="deletePersona(persona.id!)" class="btn btn-delete">
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

@@ -1,1 +1,104 @@
-<p>automovil works!</p>
+<div class="container">
+  <h1>Gestión de Automóviles</h1>
+  
+  <div class="form-card">
+    <h2>{{ editingId ? 'Editar' : 'Agregar' }} Automóvil</h2>
+    <form [formGroup]="automovilForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Marca</label>
+          <input type="text" formControlName="marca" placeholder="Ej: Toyota">
+          @if (automovilForm.get('marca')?.invalid && automovilForm.get('marca')?.touched) {
+            <span class="error">La marca es requerida</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Modelo</label>
+          <input type="text" formControlName="modelo" placeholder="Ej: Corolla">
+          @if (automovilForm.get('modelo')?.invalid && automovilForm.get('modelo')?.touched) {
+            <span class="error">El modelo es requerido</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Año</label>
+          <input type="number" formControlName="anio" placeholder="Ej: 2024">
+          @if (automovilForm.get('anio')?.invalid && automovilForm.get('anio')?.touched) {
+            <span class="error">Año inválido (1900-2025)</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Color</label>
+          <input type="text" formControlName="color" placeholder="Ej: Rojo">
+          @if (automovilForm.get('color')?.invalid && automovilForm.get('color')?.touched) {
+            <span class="error">El color es requerido</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Precio (USD)</label>
+        <input type="number" formControlName="precio" placeholder="Ej: 25000">
+        @if (automovilForm.get('precio')?.invalid && automovilForm.get('precio')?.touched) {
+          <span class="error">El precio debe ser mayor a 0</span>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="automovilForm.invalid" class="btn btn-primary">
+          {{ editingId ? 'Actualizar' : 'Guardar' }}
+        </button>
+        @if (editingId) {
+          <button type="button" (click)="cancelEdit()" class="btn btn-secondary">
+            Cancelar
+          </button>
+        }
+      </div>
+    </form>
+  </div>
+
+  <div class="table-card">
+    <h2>Lista de Automóviles</h2>
+    @if (automoviles.length === 0) {
+      <p class="no-data">No hay automóviles registrados</p>
+    } @else {
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Año</th>
+              <th>Color</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (automovil of automoviles; track automovil.id) {
+              <tr>
+                <td>{{ automovil.marca }}</td>
+                <td>{{ automovil.modelo }}</td>
+                <td>{{ automovil.anio }}</td>
+                <td>{{ automovil.color }}</td>
+                <td>${{ automovil.precio | number:'1.2-2' }}</td>
+                <td class="actions">
+                  <button (click)="editAutomovil(automovil)" class="btn btn-edit">
+                    Editar
+                  </button>
+                  <button (click)="deleteAutomovil(automovil.id!)" class="btn btn-delete">
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

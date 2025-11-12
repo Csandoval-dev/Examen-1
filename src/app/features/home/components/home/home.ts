@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './home.html',
-  styleUrl: './home.scss',
+  styleUrls: ['./home.scss']
 })
-export class Home {
-
+export class HomeComponent {
+  
+  nombreCompleto: string = 'Carlos Leonel Sandoval Cerrato';
+  numeroCuenta: string = '62111743';
 }
